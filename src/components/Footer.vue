@@ -1,0 +1,50 @@
+<template>
+  <v-footer
+    color="blue"
+    dark
+    padless
+  >
+    <v-card
+      class="flex"
+      flat
+      tile
+    >
+      <v-card-title  class="blue darken-4 ">
+        <strong class="subtitle-2">Get connected with us on social networks!</strong>
+        <v-spacer></v-spacer>
+        <v-btn
+          v-for="icon in icons"
+          :key="icon"
+          class="mx-4"
+          dark
+          icon
+        >
+          <v-icon size="24px">
+            {{ icon }}
+          </v-icon>
+        </v-btn>
+      </v-card-title>
+
+      <v-card-text class="py-2 white--text text-center blue">
+        {{ new Date().getFullYear() }} — <strong>GoUni shopping App</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
+</template>
+
+<script>
+  export default {
+    data: () => ({
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
+    }),
+  }
+</script>
+
+<style>
+
+</style>
