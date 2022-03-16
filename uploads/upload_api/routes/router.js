@@ -48,9 +48,61 @@ router.post('/register', userMiddleware.validateRegister, (req, res, next) => {
 });
 
 //Login route
-router.post('/login', (req, res, next) => {});
+router.post('/login', (req, res, next) => {
+  conn.query(
+    `SELECT * FROM customers WHERE email = ${conn.escape(req.body.email)};`,
+    (err, result) => {
+      // user does not exists
+      if (err) {
+        throw err;
+        return res.status(400).send({
+          msg: err
+        });
+      }
+      if (!result.length) {
+        return res.status(401).send({
+          msg: 'Email or password is incorrect!'
+        });
+      }
+      // check password
+      bcrypt.compare(req.body.password, result[0]['password'],
+        (bErr, bResult) => {
+          // wrong password
+          if (bErr) {
+            throw bErr;
+            return res.status(401).send({
+              msg: 'Email or password is incorrect!'
+            });
+          }
+          if (bResult) {
+            const token = jwt.sign({
+                email: result[0].email,
+                userId: result[0].id
+              },
+              'twinkletwinleluckystarforgoushoppingapp', {
+                expiresIn: '7d'
+              }
+            );
+            conn.query(
+              `UPDATE customers SET last_login = now() WHERE id = '${result[0].id}'`
+            );
+            return res.status(200).send({
+              msg: 'Logged in!',
+              token,
+              user: result[0]
+            });
+          }
+          return res.status(401).send({
+            msg: 'Username or password is incorrect!'
+          });
+        }
+      );
+    }
+  );
+});
 
-router.get('/secret-route', (req, res, next) => {
+
+router.get('/checkout', userMiddleware.isLoggedIn, (req, res, next) => {
   res.send('This is the secret content. Only logged in users can see that!');
 });
 module.exports = router;

@@ -6,7 +6,7 @@ import Cart from '../views/Cart.vue'
 import CheckOut from '../views/CheckOut.vue'
 import Product from '../views/Product.vue'
 import Register from '../views/Register.vue'
-import Login from '../views/login.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 

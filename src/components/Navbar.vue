@@ -39,7 +39,7 @@
             <v-list-item-icon>
               <v-icon small>mdi-login</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="ml-n2" @click.stop="dialog = !dialog">
+            <v-list-item-title class="ml-n2" @click="login">
               Login
             </v-list-item-title>
           </v-list-item> 
@@ -74,6 +74,9 @@ export default {
     },
     register() {
       this.$router.push('/register')
+    },
+    login() {
+      this.$router.push('/login')
     }
   }
 };

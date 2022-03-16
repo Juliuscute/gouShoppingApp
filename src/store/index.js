@@ -9,7 +9,9 @@ export default new Vuex.Store({
   state: {
     products: [],
     singleProduct: [],
-    cart: cart ? JSON.parse(cart) : [] 
+    cart: cart ? JSON.parse(cart) : [],
+    user: {},
+    token: ''
   },
   getters: {
     cartItemCount(state){
@@ -21,6 +23,12 @@ export default new Vuex.Store({
           price += item.product.product_price * item.productQuantity;
       })
       return price;
+  },
+  isLoggedIn(state) {
+    return state.token
+  },
+  getUser(state) {
+    return state.user
   }
   },
 
@@ -76,6 +84,13 @@ export default new Vuex.Store({
       }
       
     },
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    SET_TOKEN(state, token) {
+      state.token = token;
+    }
+
 
   },
   actions: {
@@ -98,6 +113,14 @@ export default new Vuex.Store({
     view({commit}, product) {
       commit('VIEW_PRODUCT', product)
     },
+    loginUser({commit}, {token, user}) {
+      commit('SET_USER', user);
+      commit('SET_TOKEN', token);
+
+      // set auth header
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+ 
   },
 
   modules: {

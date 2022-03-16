@@ -1,26 +1,27 @@
 <template>
   <div>
-    <v-container class="mb-8 ">
+    <v-container class="mb-8">
       <Navbar />
       <v-card flat tile>
         <v-card-title class="justify-center">Create An Account</v-card-title>
-            <v-alert 
-            v-if="successMessage"
-            type="success" 
-            dismissible
-            transition="fade-transition"
-            class="ml-4 mr-4"
-             >
-              {{ successMessage }}
-            </v-alert>
-            <v-alert v-if="errorMessage"
-            type="error" 
-            dismissible 
-            transition="fade-transition"
-            class="ml-4 mr-4"
-            >
-              {{ errorMessage }} 
-            </v-alert>
+        <v-alert
+          v-if="successMessage"
+          type="success"
+          dismissible
+          transition="fade-transition"
+          class="ml-4 mr-4"
+        >
+          {{ successMessage }}
+        </v-alert>
+        <v-alert
+          v-if="errorMessage"
+          type="error"
+          dismissible
+          transition="fade-transition"
+          class="ml-4 mr-4"
+        >
+          {{ errorMessage }}
+        </v-alert>
         <v-divider></v-divider>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form @submit.prevent="register" method="POST" class="ml-8 mr-8">
@@ -86,7 +87,11 @@
               >
               </v-text-field>
             </validation-provider>
-            <validation-provider name="password"  v-slot="{ errors }" rules="required|min:8">
+            <validation-provider
+              name="password"
+              v-slot="{ errors }"
+              rules="required|min:8"
+            >
               <v-text-field
                 v-model="registerationInfo.password"
                 :error-messages="errors"
@@ -102,7 +107,11 @@
               >
               </v-text-field>
             </validation-provider>
-            <validation-provider name="passwordConfirm"  v-slot="{ errors }" rules="required|min:8">
+            <validation-provider
+              name="passwordConfirm"
+              v-slot="{ errors }"
+              rules="required|min:8"
+            >
               <v-text-field
                 v-model="registerationInfo.passwordConfirm"
                 :error-messages="errors"
@@ -125,9 +134,15 @@
                 Register
               </v-btn>
               <v-btn id="btn-clear" color="blue" outlined @click="clear">
-                clear 
+                clear
               </v-btn>
             </v-card-actions>
+            <v-card-text class="text-center mt-n4"
+              >Already registered ?
+              <span>
+                <v-btn to="/login" text plain color="blue">Login</v-btn>
+              </span>
+            </v-card-text>
           </form>
         </validation-observer>
       </v-card>
@@ -137,7 +152,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 export default {
@@ -149,67 +164,66 @@ export default {
   data() {
     return {
       registerationInfo: {
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone_number: '',
-          password: '',
-          passwordConfirm: '',
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        passwordConfirm: "",
       },
       show1: false,
       show2: false,
-      successMessage: '',
-      errorMessage: '',
+      successMessage: "",
+      errorMessage: "",
       error: false,
-      alert: true
-    }
+      alert: true,
+    };
   },
   created() {
     setTimeout(() => {
-      this.alert = false
-    }, 5000)
+      this.alert = false;
+    }, 5000);
   },
   methods: {
-     async register() {
+    async register() {
       if (this.$refs.observer.validate()) {
-       try {
+        try {
           let response = await axios.post("http://localhost:5000/api/register", {
-          firstName:       this.registerationInfo.firstName,
-          lastName:        this.registerationInfo.lastName,
-          email:           this.registerationInfo.email,
-          phone_number:    this.registerationInfo.phone_number,
-          password:        this.registerationInfo.password,
-          passwordConfirm: this.registerationInfo.passwordConfirm,
-      })
-        this.successMessage = response.data.msg
-        this.error = false
-       }
-       catch(error) {
-          console.log(error)
-          this.errorMessage = error.response.data.msg; 
+              firstName: this.registerationInfo.firstName,
+              lastName: this.registerationInfo.lastName,
+              email: this.registerationInfo.email,
+              phone_number: this.registerationInfo.phone_number,
+              password: this.registerationInfo.password,
+              passwordConfirm: this.registerationInfo.passwordConfirm,
+            }
+          );
+          this.successMessage = response.data.msg;
+          this.error = false;
+        } catch (error) {
+          console.log(error);
+          this.errorMessage = error.response.data.msg;
           this.error = true;
-       }
+        }
       }
-      this.registerationInfo.firstName = '',
-      this.registerationInfo.lastName = '',
-      this.registerationInfo.email = '',
-      this.registerationInfo.phone_number = '',
-      this.registerationInfo.password = '',
-      this.registerationInfo.passwordConfirm = '',
-      this.$refs.observer.reset()
+      (this.registerationInfo.firstName = ""),
+        (this.registerationInfo.lastName = ""),
+        (this.registerationInfo.email = ""),
+        (this.registerationInfo.phone_number = ""),
+        (this.registerationInfo.password = ""),
+        (this.registerationInfo.passwordConfirm = ""),
+        this.$refs.observer.reset();
     },
 
     clear() {
-      this.registerationInfo.firstName = '',
-      this.registerationInfo.lastName = '',
-      this.registerationInfo.email = '',
-      this.registerationInfo.phone_number = '',
-      this.registerationInfo.password = '',
-      this.registerationInfo.passwordConfirm = '',
-      this.$refs.observer.reset()
-    }
-  }
-
+      (this.registerationInfo.firstName = ""),
+        (this.registerationInfo.lastName = ""),
+        (this.registerationInfo.email = ""),
+        (this.registerationInfo.phone_number = ""),
+        (this.registerationInfo.password = ""),
+        (this.registerationInfo.passwordConfirm = ""),
+        this.$refs.observer.reset();
+    },
+  },
 };
 </script>
 
@@ -217,5 +231,4 @@ export default {
 .container {
   padding: o !important;
 }
-
 </style>

@@ -28,6 +28,7 @@
         </v-col>
 
         <v-col cols="3" class="col-md-1">
+          <v-btn to="/checkout">checkout</v-btn>
           <v-btn icon to="/cart">        
             <v-icon class="white--text">mdi-cart-outline</v-icon>
             <span class="badge"> {{cartItemCount}} </span>            
