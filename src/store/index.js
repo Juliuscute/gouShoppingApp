@@ -4,14 +4,16 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 let cart = window.localStorage.getItem('cart' )
+let currentUser = window.localStorage.getItem('currentUser')
 
 export default new Vuex.Store({
   state: {
     products: [],
     singleProduct: [],
     cart: cart ? JSON.parse(cart) : [],
-    user: {},
-    token: ''
+    currentUser: currentUser ? JSON.parse(currentUser) : {},
+    token: '',
+    
   },
   getters: {
     cartItemCount(state){
@@ -25,10 +27,14 @@ export default new Vuex.Store({
       return price;
   },
   isLoggedIn(state) {
-    return state.token
+    let token = state.token
+    if(!token) {
+      token = JSON.parse(window.localStorage.getItem('token'))
+    }
+    return token
   },
   getUser(state) {
-    return state.user
+    return state.currentUser
   }
   },
 
@@ -51,6 +57,7 @@ export default new Vuex.Store({
     saveProduct(state) {
       window.localStorage.setItem('cart', JSON.stringify(state.cart));
     },
+    
     REMOVE_ITEM(state, item) {
       if(state.cart.length > 0) {
         //make a copy of each product and name it cartProduct
@@ -84,11 +91,21 @@ export default new Vuex.Store({
       }
       
     },
-    SET_USER(state, user) {
-      state.user = user;
+    
+    SET_CURRENT_USER(state, user) {
+      state.currentUser = user;
     },
     SET_TOKEN(state, token) {
       state.token = token;
+    },
+
+    LOG_OUT(state) {
+      state.currentUser = {}
+      state.cart = [];
+      state.cart = {}
+      window.localStorage.removeItem('currentUser');
+      window.localStorage.removeItem('token'); 
+      window.localStorage.removeItem('cart'); 
     }
 
 
@@ -113,12 +130,16 @@ export default new Vuex.Store({
     view({commit}, product) {
       commit('VIEW_PRODUCT', product)
     },
-    loginUser({commit}, {token, user}) {
-      commit('SET_USER', user);
+    loginUser({commit}, {token, user}) { 
+      commit('SET_CURRENT_USER', user);
       commit('SET_TOKEN', token);
 
       // set auth header
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    },
+   
+    logOut({commit}) {
+      commit('LOG_OUT');
     }
  
   },

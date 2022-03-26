@@ -22,7 +22,7 @@
         >
           {{ errorMessage }}
         </v-alert>
-        <v-divider></v-divider>
+        <v-divider class="mb-8"></v-divider>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form @submit.prevent="register" method="POST" class="ml-8 mr-8">
             <validation-provider
@@ -130,17 +130,17 @@
             </validation-provider>
 
             <v-card-actions class="justify-center">
-              <v-btn color="blue" outlined type="submit" :disabled="invalid">
+              <v-btn color="blue darken-3" outlined type="submit" :disabled="invalid">
                 Register
               </v-btn>
-              <v-btn id="btn-clear" color="blue" outlined @click="clear">
+              <v-btn id="btn-clear" color="blue darken-3" outlined @click="clear">
                 clear
               </v-btn>
             </v-card-actions>
             <v-card-text class="text-center mt-n4"
               >Already registered ?
               <span>
-                <v-btn to="/login" text plain color="blue">Login</v-btn>
+                <v-btn to="/login" text plain color="blue darken-3">Login</v-btn>
               </span>
             </v-card-text>
           </form>

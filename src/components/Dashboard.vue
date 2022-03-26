@@ -1,6 +1,17 @@
 <template>
   <v-container fluid>
     <v-card
+      v-if="currentUser"
+      color="blue darken-3"
+      height="50px"
+      tile
+      flat
+      dark
+      class=" align-center justify-center hidden-sm-and-up"
+    >
+      <v-card-text class="text-center subtitle-1  white--text">Hi, {{ currentUser }}</v-card-text>
+    </v-card>
+    <v-card
       color="#0D47A1"
       height="150px"
       tile
@@ -28,7 +39,6 @@
         </v-col>
 
         <v-col cols="3" class="col-md-1">
-          <v-btn to="/checkout">checkout</v-btn>
           <v-btn icon to="/cart">        
             <v-icon class="white--text">mdi-cart-outline</v-icon>
             <span class="badge"> {{cartItemCount}} </span>            
@@ -116,7 +126,8 @@
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
+      currentUser: ''
     };
   },
   computed: {
@@ -129,6 +140,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getProducts');
+  },
+  created() {
+    this.currentUser = this.$store.getters.getUser.firstName;
   },
   methods: {
     addToCart(product) {
