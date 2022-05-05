@@ -56,7 +56,7 @@ app.use('/api', router);
 //Sending products to database
 app.post("/upload", upload.single('product_image'), (req, res) => {
   if (!req.file) {
-    console.log("No file uploade");
+    console.log("No file uploaded");
   } else {
 
     const sql = `INSERT INTO products (product_image, product_name, product_price, product_category, product_description) VALUES ("${req.file.filename}", "${req.body.product_name}", "${req.body.product_price}", "${req.body.product_category}", "${req.body.product_description}")`;
@@ -65,26 +65,24 @@ app.post("/upload", upload.single('product_image'), (req, res) => {
       //Middleware that runs when error callback happens
       app.use(function (err, req, res, next) {
         if (err.code === "LIMIT_FILE_TYPES") {
-          res.status(422).json({ error: "Only images are allowed" });
-          return;
+          return res.status(422).send({ error: "Only images are allowed" });
         }
         if (err.code === LIMIT_FILE_SIZE) {
-          res.status(422).json({ error: `Too large. Max size is ${MAX_SIZE / 1000}kb` });
-          return;
+          return  res.status(422).send({ error: `Too large. Max size is ${MAX_SIZE / 1000}kb` });   
         }
       });
 
       if (err) throw err
       //res.json([true,results]) //.insertId
-      res.json({ message: 'Product has been uploaded' })
+      return res.send({ message: 'Product has been uploaded' })
     })
   }
-})
+})   
 
 
 // Getting all product from database
 app.get("/fetch", (req, res) => {
-  const sql = " SELECT * from products"
+  const sql = " SELECT * FROM products"
   conn.query(sql, function(err, rows) {
     if(err) {
       console.log(err);
@@ -92,6 +90,41 @@ app.get("/fetch", (req, res) => {
       res.json(rows);
     }
   }) 
+})
+//Getting all users from databse
+app.get("/getUsers", (req, res) => {
+  const sql = " SELECT COUNT(*)  as 'count' FROM customers"
+  conn.query(sql, function(err, rows) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.json(rows[0].count);
+    }
+  }) 
+})
+
+// Getting orders from database
+app.get('/getOrders', (req, res) => {
+  const sql = "SELECT * FROM orders"
+  conn.query(sql, function(err, rows) {
+    if(err) {
+      throw err
+    } else {
+      res.json(rows);
+    }
+  })
+})
+
+// Getting pending orders
+app.get('/getPendingOrders', (req, res) => {
+  const sql = "SELECT COUNT(*) as 'count' FROM orders WHERE status = 'to be processed'"; 
+  conn.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(rows[0].count);
+    }
+  })
 })
 
 //Listen on environment port or 5000

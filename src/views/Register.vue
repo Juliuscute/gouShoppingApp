@@ -74,6 +74,22 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
+              name="address"
+              rules="required|max:30"
+            >
+              <v-text-field
+                v-model="registerationInfo.address"
+                :counter="30"
+                prepend-icon="mdi-map-marker"
+                :error-messages="errors"
+                label="Address"
+                required
+                color="blue"
+              >
+              </v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
               name="phone_number"
               rules="required|numeric|max:15"
             >
@@ -97,7 +113,6 @@
                 :error-messages="errors"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show1 ? 'text' : 'password'"
-                name="password"
                 label="Password"
                 hint="At least 8 characters"
                 counter
@@ -108,7 +123,7 @@
               </v-text-field>
             </validation-provider>
             <validation-provider
-              name="passwordConfirm"
+              name="passwordField"
               v-slot="{ errors }"
               rules="required|min:8"
             >
@@ -117,7 +132,6 @@
                 :error-messages="errors"
                 :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show2 ? 'text' : 'password'"
-                name="passwordConfirm"
                 label="Confirm Password"
                 hint="At least 8 characters"
                 counter
@@ -167,6 +181,7 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
+        address: "",
         phone_number: "",
         password: "",
         passwordConfirm: "",
@@ -192,6 +207,7 @@ export default {
               firstName: this.registerationInfo.firstName,
               lastName: this.registerationInfo.lastName,
               email: this.registerationInfo.email,
+              address: this.registerationInfo.address,
               phone_number: this.registerationInfo.phone_number,
               password: this.registerationInfo.password,
               passwordConfirm: this.registerationInfo.passwordConfirm,
@@ -205,22 +221,24 @@ export default {
           this.error = true;
         }
       }
-      (this.registerationInfo.firstName = ""),
-        (this.registerationInfo.lastName = ""),
-        (this.registerationInfo.email = ""),
-        (this.registerationInfo.phone_number = ""),
-        (this.registerationInfo.password = ""),
-        (this.registerationInfo.passwordConfirm = ""),
+        this.registerationInfo.firstName = "",
+        this.registerationInfo.lastName = "",
+        this.registerationInfo.email = "",
+        this.registerationInfo.address = "",
+        this.registerationInfo.phone_number = "",
+        this.registerationInfo.password = "",
+        this.registerationInfo.passwordConfirm = "",
         this.$refs.observer.reset();
     },
 
     clear() {
-      (this.registerationInfo.firstName = ""),
-        (this.registerationInfo.lastName = ""),
-        (this.registerationInfo.email = ""),
-        (this.registerationInfo.phone_number = ""),
-        (this.registerationInfo.password = ""),
-        (this.registerationInfo.passwordConfirm = ""),
+        this.registerationInfo.firstName = "",
+        this.registerationInfo.lastName = "",
+        this.registerationInfo.email = "",
+        this.registerationInfo.address = "",
+        this.registerationInfo.phone_number = "",
+        this.registerationInfo.password = "",
+        this.registerationInfo.passwordConfirm = "",
         this.$refs.observer.reset();
     },
   },

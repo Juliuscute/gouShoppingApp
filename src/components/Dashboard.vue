@@ -22,22 +22,31 @@
     >
       <v-row>
         <v-col cols="9" class="col-md-11">
-          <v-autocomplete
-            v-model="select"
-            :loading="loading"
-            :items="items"
-            :search-input.sync="search"
-            cache-items
-            class="mx-4"
-            flat
-            hide-no-data
-            hide-details
-            prepend-icon="mdi-magnify"
-            label="Search for product..."
-            solo-inverted
-          ></v-autocomplete>
+          <v-text-field
+              outlined
+              class="ml-4"
+              rounded
+              v-model="searchProduct"
+              dense
+              append-icon="mdi-magnify"
+              placeholder="Search..."
+            >
+            </v-text-field>
         </v-col>
-
+          <v-snackbar
+          v-model="snackbar"
+          absolute
+          transition="slide-y-transition"
+          timeout="2000"
+          color="success"
+        >
+          <div class="d-flex justify-space-around">
+            <h5 class="subtitle-1 font-weight-bold white--text"
+              ><v-icon>mdi-check-circle</v-icon> &nbsp;
+              item added to cart
+            </h5>
+          </div>
+        </v-snackbar>
         <v-col cols="3" class="col-md-1">
           <v-btn icon to="/cart">        
             <v-icon class="white--text">mdi-cart-outline</v-icon>
@@ -48,7 +57,7 @@
     </v-card>
     <v-card tile class="mb-8 mt-n8" color="white">
       <v-row class="card1">
-        <v-col cols="12" md="3" sm="6" v-for="product in products " :key="product.productId">
+        <v-col cols="12" md="3" sm="6" v-for="product in filteredProduct " :key="product.productId">
           <v-hover v-slot:default="{ hover }">
             <v-card height="350" width="310" align="center" flat outlined tile class="ml-4 mr-8" >
               <v-card-actions>
@@ -69,11 +78,11 @@
               </v-card-text>
               <v-card-text class="mt-n12">
                 <v-card-subtitle :class="hover ? 'red--text' : 'black--text'">
-                  N{{product.product_price}}.00
+                  ₦{{product.product_price}}.00
                 </v-card-subtitle>
               </v-card-text>
               <v-card-actions class="justify-center mt-n8 hidden-md-and-up">
-               <v-btn rounded small color="success" outlined @click="addToCart(product)">
+               <v-btn rounded small color="success" outlined @click="addToCart(product); snackbar=true">
                     <v-icon small color="success">mdi-cart-outline</v-icon>
                     Add to cart
                 </v-btn>
@@ -95,7 +104,7 @@
                   "
                   style="height: 100%"
                 >
-                  <v-btn rounded small color="white" @click="addToCart(product)">
+                  <v-btn rounded small color="white" @click="addToCart(product); snackbar=true">
                     <v-icon small color="black">mdi-cart-outline</v-icon>
                     <strong> Add to cart </strong>
                   </v-btn>&nbsp;
@@ -110,15 +119,6 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-dialog 
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
-      <v-card>
-        hello
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -126,13 +126,17 @@
 export default {
   data() {
     return {
-      dialog: false,
-      currentUser: ''
+      currentUser: '',
+      snackbar: false,
+      searchProduct: "",
+      products: ""
     };
   },
   computed: {
-    products() {
-      return this.$store.state.products;
+     filteredProduct() {
+      return this.products.filter(product => {
+        return product.product_name.toLowerCase().match(this.searchProduct.toLowerCase())
+      })
     },
     cartItemCount() {
       return this.$store.getters.cartItemCount;
@@ -143,16 +147,17 @@ export default {
   },
   created() {
     this.currentUser = this.$store.getters.getUser.firstName;
+    this.products = this.$store.state.products;
   },
   methods: {
     addToCart(product) {
-      this.$store.dispatch('addProductToCart', {
+      this.$store.dispatch('addToCart', {
         product,
         productQuantity: 1
       });
     },
     viewProduct(product) {
-      this.$store.dispatch('view', product)
+      this.$store.dispatch('viewProduct', product)
       this.$router.push('product')
     }
   }

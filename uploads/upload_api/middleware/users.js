@@ -1,5 +1,6 @@
 // middleware/users.js
 const jwt = require("jsonwebtoken");
+
 module.exports = {
   validateRegister: (req, res, next) => {
     // firstName min length 3
@@ -56,6 +57,25 @@ isLoggedIn: (req, res, next) => {
       msg: 'Your session is not valid!'
     });
   }
+},
+
+//Change password middleware
+checkPassword: (req, res, next) => {
+  // password min 8 chars
+  if (!req.body.newPassword || req.body.newPassword.length < 8) {
+    return res.status(400).send({
+      msg: 'Please enter a new password with min. 8 characters'
+    });
+  }
+  if (!req.body.newPasswordConfirm || req.body.newPasswordConfirm.length < 8) {
+    return res.status(400).send({
+      msg: 'Please enter a new password with min. 8 characters'
+    });
+  }
+  if(!req.body.newPasswordConfirm || req.body.newPassword != req.body.newPasswordConfirm) {
+    return res.status(400).send({msg: "The new password must match"})
+  }
+  next();
 }
 
 };
