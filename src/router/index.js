@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Admin from '../views/Admin.vue'
 import Admin_dashboard from '../views/Admin_dashboard.vue'
 import Cart from '../views/Cart.vue'
 import CheckOut from '../views/CheckOut.vue'
@@ -14,7 +13,6 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', name: 'home', component: Home },
-  { path: '/admin', name: 'admin', component: Admin },
   { path: '/admin_dashboard', name: 'admin_dashboard', component: Admin_dashboard },
   { path: '/cart', name: 'cart', component: Cart },
   { path: '/checkOut', name: 'checkOut', component: CheckOut},
