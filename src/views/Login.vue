@@ -95,7 +95,7 @@ export default {
      async login() {
           try {
               if (this.$refs.observer.validate()) {
-                  let response = await axios.post("http://localhost:5000/api/login", {
+                  let response = await axios.post("api/login", {
                       email: this.loginInfo.email,
                       password: this.loginInfo.password
                   })
