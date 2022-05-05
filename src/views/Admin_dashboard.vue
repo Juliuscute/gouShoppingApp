@@ -392,7 +392,7 @@
                 type="file"
                 style="display: none"
                 required
-                @change="selectFile"
+               @change="selectFile"
                 ref="fileInput"
               />
               <v-btn class="mt-4 mb-4" raised @click="$refs.fileInput.click()">
@@ -407,7 +407,7 @@
               </span>
               <validation-provider
                 v-slot="{ errors }"
-                name="product_name"
+                name="product name"
                 rules="required|max:30"
               >
                 <v-text-field
@@ -424,7 +424,7 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="product_price"
+                name="product price"
                 rules="required|numeric|max:50"
               >
                 <v-text-field
@@ -451,7 +451,7 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="product_description"
+                name="product description"
                 rules="required|max:150"
               >
                 <v-textarea
@@ -1117,18 +1117,17 @@ export default {
     },
     selectFile(event) {
       const selectedFile = event.target.files[0];
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-      const MAX_SIZE = 500000;
-      const tooLarge = selectedFile.size > MAX_SIZE;
+    //   const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    //   const MAX_SIZE = 500000;
+    //   const tooLarge = selectedFile.size > MAX_SIZE;
 
-      if (allowedTypes.includes(selectedFile.type) && !tooLarge) {
-        this.selectedFile = selectedFile;
-        this.errorMessae = false;
-        this.errorMessage = tooLarge
-          ? `Too large. Max size is ${MAX_SIZE / 1000}kb`
-          : "Only images are allowed";
-      }
-    },
+    //   if (allowedTypes.includes(selectedFile.type) && !tooLarge) {
+       this.selectedFile = selectedFile;
+    //     this.errorMessage = false;
+    //     this.errorMessage = tooLarge ? `Too large. Max size is ${MAX_SIZE / 1000}kb` : "Only images are allowed";
+    //   }
+     },
+     
     async uploadProduct() {
       const data = new FormData();
       data.append("product_image", this.selectedFile);
@@ -1148,21 +1147,22 @@ export default {
           this.error = true;
         }
       }
-      (this.selectedFile = ""),
-        (this.product_name = ""),
-        (this.product_price = ""),
-        (this.product_category = ""),
-        (this.product_description = ""),
+        this.selectedFile = "",
+        this.product_name = "",
+        this.product_price = "",
+        this.product_category = "",
+        this.product_description = "",
         this.$refs.observer.reset();
     },
     clear() {
-      (this.selectedFile = ""),
-        (this.product_name = ""),
-        (this.product_price = ""),
-        (this.product_category = ""),
-        (this.product_description = ""),
+        this.selectedFile = "",
+        this.product_name = "",
+        this.product_price = "",
+        this.product_category = "",
+        this.product_description = "",
         this.$refs.observer.reset();
     },
+
     async updateUser() {
       if (this.$refs.observer.validate()) {
         try {
@@ -1189,6 +1189,7 @@ export default {
         }
       }
     },
+
     async updateOrderStatus() {
       try {
         let response = await axios.put("api/updateOrderStatus", {
@@ -1201,6 +1202,7 @@ export default {
         console.log(error)
       }
     },
+
     async editPassword() {
        if (this.$refs.observer.validate()) {
          try {

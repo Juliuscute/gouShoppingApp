@@ -3,9 +3,16 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
 const uuid = require("uuid");
+const mysql = require('mysql');
 const jwt = require("jsonwebtoken");
 const conn = require("../connection/conn");
 const userMiddleware = require("../middleware/users.js");
+
+
+//Body Parser Middleware
+router.use(express.json());
+router.use(express.urlencoded({ extended: false })); //handling form submission
+
 
 //Registration route
 router.post("/register", userMiddleware.validateRegister, (req, res, next) => {
@@ -332,7 +339,7 @@ router.post("/upload", upload.single('product_image'), (req, res) => {
     conn.query(sql, function (err, result) {
 
       //Middleware that runs when error callback happens
-      app.use(function (err, req, res, next) {
+      router.use(function (err, req, res, next) {
         if (err.code === "LIMIT_FILE_TYPES") {
           return res.status(422).send({ error: "Only images are allowed" });
         }

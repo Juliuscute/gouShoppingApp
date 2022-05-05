@@ -99,9 +99,9 @@ export default {
                       email: this.loginInfo.email,
                       password: this.loginInfo.password
                   })
-                    const token = response.data.token;
-                    const user = response.data.user;
-                   //console.log(response.data.user)
+                     const token = response.data.token;
+                     const user = response.data.user;
+                   // console.log(response.data)
                      this.$store.dispatch('loginUser', { token, user });
                      window.localStorage.setItem('currentUser', JSON.stringify(user))
                      window.localStorage.setItem('token', JSON.stringify(token))

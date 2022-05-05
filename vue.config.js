@@ -1,5 +1,7 @@
 const path = require('path');
+
 module.exports = {
+  outputDir: path.resolve(__dirname, '../uploads/public'),
   devServer: {
     proxy: {
       '/api': {
@@ -10,4 +12,4 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ]
-}
+};
