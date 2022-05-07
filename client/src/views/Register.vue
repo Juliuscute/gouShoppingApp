@@ -203,7 +203,7 @@ export default {
     async register() {
       if (this.$refs.observer.validate()) {
         try {
-          let response = await axios.post("api/register", {
+          let response = await axios.post("http://localhost:5000/api/register", {
               firstName: this.registerationInfo.firstName,
               lastName: this.registerationInfo.lastName,
               email: this.registerationInfo.email,

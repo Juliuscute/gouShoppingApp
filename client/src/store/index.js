@@ -169,25 +169,25 @@ export default new Vuex.Store({
   },
   actions: {
     async getProducts({ commit }) {
-      let response = await  axios.get("api/fetch")
+      let response = await  axios.get("http://localhost:5000/api/fetch")
       let products = response.data;
       commit('SET_PRODUCTS', products);  
     },
     //get total users
     async getTotalUsers({commit}) {
-      let response = await axios.get("api/getUsers")
+      let response = await axios.get("http://localhost:5000/api/getUsers")
       let totalUsers = response.data;
       commit("SET_TOTAL_USERS", totalUsers) 
     },
     //Get orders
    async getOrders({commit}) {
-     let response = await axios.get("api/getOrders")
+     let response = await axios.get("http://localhost:5000/api/getOrders")
      let orders = response.data
      commit("SET_ORDERS", orders)
    },
    //Get pending orders
    async getPendingOrders ({commit}) {
-     let response = await axios.get("api/getPendingOrders")
+     let response = await axios.get("http://localhost:5000/api/getPendingOrders")
      let pendingOrders = response.data
      commit("PENDING_ORDERS", pendingOrders)
    },
@@ -234,7 +234,7 @@ export default new Vuex.Store({
         shippingAddress: getters.shippingAddress
     };
     try {
-      let response = await axios.post("api/order", order)
+      let response = await axios.post("http://localhost:5000/api/order", order)
       console.log(response)
       window.localStorage.removeItem('cart'); 
       window.location.href = '/'

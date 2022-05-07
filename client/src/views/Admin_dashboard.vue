@@ -1138,7 +1138,7 @@ export default {
 
       if (this.$refs.observer.validate()) {
         try {
-          let response = await axios.post("api/upload", data);
+          let response = await axios.post("http://localhost:5000/api/upload", data);
           this.successMessage = response.data.message;
           this.error = false;
         } catch (error) {
@@ -1166,7 +1166,7 @@ export default {
     async updateUser() {
       if (this.$refs.observer.validate()) {
         try {
-          let response = await axios.put("api/update", {
+          let response = await axios.put("http://localhost:5000/api/update", {
             customerId: this.customerId,
             firstName: this.firstName,
             lastName: this.lastName,
@@ -1192,7 +1192,7 @@ export default {
 
     async updateOrderStatus() {
       try {
-        let response = await axios.put("api/updateOrderStatus", {
+        let response = await axios.put("http://localhost:5000/api/updateOrderStatus", {
            orderId: this.orderId
         })
         this.$store.dispatch("getOrders");
@@ -1206,7 +1206,7 @@ export default {
     async editPassword() {
        if (this.$refs.observer.validate()) {
          try {
-           let response = await axios.put("api/passwordChange", {
+           let response = await axios.put("http://localhost:5000/api/passwordChange", {
             currentPassword:    this.currentPassword,
             newPassword:        this.newPassword,
             newPasswordConfirm: this.newPasswordConfirm,
