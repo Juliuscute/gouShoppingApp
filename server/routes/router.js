@@ -5,7 +5,7 @@ const multer = require('multer');
 const uuid = require("uuid");
 const mysql = require('mysql');
 const jwt = require("jsonwebtoken");
-const conn = require("../connection/conn");
+let conn = require("../connection/conn");
 const userMiddleware = require("../middleware/users.js");
 
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
-const conn = require('./connection/conn');
+let conn = require('./connection/conn');
 const cors = require('cors');
 const router = require('./routes/router.js');
 
