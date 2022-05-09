@@ -26,7 +26,7 @@
             offset-x="10"
             offset-y="10"
             color="red"
-            :content="pendingOrders"
+            :content="pendingOrdersCount"
           >
             <v-icon>mdi-bell</v-icon>
           </v-badge>
@@ -34,7 +34,7 @@
       </template>
       <v-card>
         <v-list>
-          <v-list-item> you have {{ pendingOrders }} pending orders </v-list-item>
+          <v-list-item> you have {{ pendingOrdersCount }} pending orders </v-list-item>
         </v-list>
       </v-card>
     </v-menu>
@@ -99,12 +99,12 @@ export default {
         this.lastName = this.$store.getters.getUser.lastName
      },
      computed: {
-       pendingOrders() {
-        return this.$store.state.pendingOrders;
+       pendingOrdersCount() {
+        return this.$store.state.pendingOrdersCount;
     },
      },
      mounted() {
-      this.$store.dispatch("getPendingOrders")
+      this.$store.dispatch("getPendingOrdersCount")
   },
   methods: {
     logout() {

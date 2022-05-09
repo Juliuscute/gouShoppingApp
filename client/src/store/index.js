@@ -7,7 +7,9 @@ let cart = window.localStorage.getItem('cart' )
 let currentUser = window.localStorage.getItem('currentUser')
 let products = window.localStorage.getItem('products')
 let totalUsers = window.localStorage.getItem('totalUsers')
-//let orders = window.localStorage.getItem('orders')
+let orders = window.localStorage.getItem('orders')
+let pendingOrders = window.localStorage.getItem('pendingOrders')
+
 
 export default new Vuex.Store({
   state: {
@@ -17,9 +19,9 @@ export default new Vuex.Store({
     singleOrder:  null,
     cart: cart ? JSON.parse(cart) : [],
     currentUser: currentUser ? JSON.parse(currentUser) : {},
-    //orders: orders ? JSON.parse(orders) : {},
-    orders: '',
-    pendingOrders: '',
+    orders: orders ? JSON.parse(orders) : {},
+    pendingOrdersCount: '',
+    pendingOrders: pendingOrders ? JSON.parse(pendingOrders) : {},
     token: '',
     shippingFee: '',
     shippingAddress: '',
@@ -59,15 +61,7 @@ export default new Vuex.Store({
     }
     return token
   },
-  // isAdmin(state) {
-  //   let currentUser = state.currentUser; 
-  //   if(!currentUser) {
-  //     currentUser = JSON.parse(localStorage.getItem('currentUser'))
-  //   }
-  //   if(currentUser.role === "Admin") {
-  //     return currentUser
-  //   }
-  // },
+
   getUser(state) {
     return state.currentUser
   },
@@ -96,10 +90,14 @@ export default new Vuex.Store({
     },
     SET_ORDERS(state, orders) {
       state.orders = orders;
-      //window.localStorage.setItem('orders', JSON.stringify(state.orders))
+      window.localStorage.setItem('orders', JSON.stringify(state.orders))
     }, 
+    PENDING_ORDERS_COUNT(state, pendingOrdersCount) {
+      state.pendingOrdersCount = pendingOrdersCount
+    },
     PENDING_ORDERS(state, pendingOrders) {
       state.pendingOrders = pendingOrders
+      window.localStorage.setItem('pendingOrders', JSON.stringify(state.pendingOrders))
     },
     ADD_TO_CART(state, {product, productQuantity}) {
     
@@ -185,12 +183,18 @@ export default new Vuex.Store({
      let orders = response.data
      commit("SET_ORDERS", orders)
    },
-   //Get pending orders
-   async getPendingOrders ({commit}) {
-     let response = await axios.get("http://localhost:5000/api/getPendingOrders")
-     let pendingOrders = response.data
-     commit("PENDING_ORDERS", pendingOrders)
+   //Get pending orders count
+   async getPendingOrdersCount ({commit}) {
+     let response = await axios.get("http://localhost:5000/api/getPendingOrdersCount")
+     let pendingOrdersCount = response.data
+     commit("PENDING_ORDERS_COUNT", pendingOrdersCount)
    },
+   //Get pending orders count
+   async getPendingOrders ({commit}) {
+    let response = await axios.get("http://localhost:5000/api/getPendingOrders")
+    let pendingOrders = response.data
+    commit("PENDING_ORDERS", pendingOrders)
+  },
     // Add single product to cart
     addToCart({commit}, {product, productQuantity}) {
       commit('ADD_TO_CART', {product, productQuantity});
@@ -219,7 +223,7 @@ export default new Vuex.Store({
 
       const cartItems = JSON.stringify(getters.cart)
       const items = JSON.parse(cartItems)
-      const productNames = JSON.stringify(items.map(el => el.product.product_name))
+      const productNames = JSON.stringify(items.map(el => el.product.product_name + ',' + " " + "product quantity is" + " " + el.productQuantity + " "))
       
        let order = {
         cart: productNames,

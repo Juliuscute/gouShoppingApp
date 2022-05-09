@@ -86,7 +86,7 @@
                 offset-x="10"
                 offset-y="10"
                 color="red"
-                :content="pendingOrders"
+                :content="pendingOrdersCount"
               >
                 <v-icon>mdi-bell</v-icon>
               </v-badge>
@@ -94,7 +94,7 @@
           </template>
           <v-card>
             <v-list>
-              <v-list-item> you have one new order </v-list-item>
+              <v-list-item> you have {{ pendingOrdersCount }} pending orders </v-list-item>
             </v-list>
           </v-card>
         </v-menu>
@@ -167,7 +167,7 @@
                   </v-col>
                   <v-col cols="4" offset="4">
                     <v-avatar color="red" class="white--text mt-2 pa-8">
-                      {{ pendingOrders }}
+                      {{ pendingOrdersCount }}
                     </v-avatar>
                   </v-col>
                 </v-row>
@@ -181,28 +181,12 @@
               <div class="font-weight-bold ml-8 mb-2">Activities</div>
 
               <v-timeline align-top dense>
-                <v-timeline-item small color="green">
+                <v-timeline-item small color="green" v-for="order in pendingOrders" :key="order.order_Id">
                   <div>
                     <div class="font-weight-normal">
-                      <strong>John Doe</strong> @11:45am
+                      <strong>You have pending order from {{order.customerName}}</strong>
                     </div>
-                    <div>I have not received my order</div>
-                  </div>
-                </v-timeline-item>
-                <v-timeline-item small color="red">
-                  <div>
-                    <div class="font-weight-normal">
-                      <strong>John Doe</strong> @11:45am
-                    </div>
-                    <div>I have not received my order</div>
-                  </div>
-                </v-timeline-item>
-                <v-timeline-item small purple>
-                  <div>
-                    <div class="font-weight-normal">
-                      <strong>John Doe</strong> @11:45am
-                    </div>
-                    <div>I have not received my order</div>
+                    <div>orders received on {{order.orderTime}}</div>
                   </div>
                 </v-timeline-item>
               </v-timeline>
@@ -1069,16 +1053,17 @@ export default {
     this.$store.dispatch("getTotalUsers");
     this.$store.dispatch("getOrders");
     this.$store.dispatch("getProducts");
+    this.$store.dispatch("getPendingOrdersCount")
     this.$store.dispatch("getPendingOrders")
   },
   computed: {
     //searching orders
     filteredOrders() {
-      let orderArray =JSON.stringify(Object.values(this.orders))
-      return JSON.parse(orderArray).filter(order => {
-        return order.customerEmail.toLowerCase().match(this.searchOrder.toLowerCase());
+      return this.orders.filter(order => {
+         return order.customerEmail.toLowerCase().match(this.searchOrder.toLowerCase());
       })
     },
+
     //searching products
     filteredProducts() {
       return this.products.filter(product => {
@@ -1087,6 +1072,9 @@ export default {
     },
     totalUsers() {
       return this.$store.getters.getTotalUsers;
+    },
+    pendingOrdersCount() {
+      return this.$store.state.pendingOrdersCount;
     },
     pendingOrders() {
       return this.$store.state.pendingOrders;

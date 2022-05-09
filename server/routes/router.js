@@ -285,14 +285,26 @@ router.get('/getOrders', (req, res) => {
 })
 
 
-// Getting pending orders
-router.get('/getPendingOrders', (req, res) => {
+// Getting pending orders count
+router.get('/getPendingOrdersCount', (req, res) => {
   const sql = "SELECT COUNT(*) as 'count' FROM orders WHERE status = 'to be processed'"; 
   conn.query(sql, (err, rows) => {
     if (err) {
       console.log(err)
     } else {
       res.json(rows[0].count);
+    }
+  })
+})
+
+// Getting pending orders 
+router.get('/getPendingOrders', (req, res) => {
+  const sql = "SELECT * FROM orders WHERE status = 'to be processed'"; 
+  conn.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(rows);
     }
   })
 })
