@@ -20,7 +20,7 @@ if(process.env.NODE_ENV === 'production') {
     app.use('/', serveStatic(path.join(__dirname, '/dist')));
 
     //Handle Single Page Application (SPA)
-   // app.get(/.*/, (req, res) => res.sendFile(__dirname + '/dist/index.html'));
+    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/dist/index.html'));
 }
 
 
