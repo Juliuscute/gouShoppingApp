@@ -9,13 +9,15 @@ let products = window.localStorage.getItem('products')
 let totalUsers = window.localStorage.getItem('totalUsers')
 let orders = window.localStorage.getItem('orders')
 let pendingOrders = window.localStorage.getItem('pendingOrders')
-
+let studentProducts = window.localStorage.getItem('studentProducts')
+let singleProduct = window.localStorage.getItem('singleProduct');
 
 export default new Vuex.Store({
   state: {
     products: products ? JSON.parse(products) : {},
+    studentProducts: studentProducts ? JSON.parse(studentProducts) : {},
     totalUsers: totalUsers ? JSON.parse(totalUsers) : {},
-    singleProduct: null,
+    singleProduct: singleProduct ? JSON.parse(singleProduct) : null,
     singleOrder:  null,
     cart: cart ? JSON.parse(cart) : [],
     currentUser: currentUser ? JSON.parse(currentUser) : {},
@@ -84,6 +86,10 @@ export default new Vuex.Store({
       state.products = products;
       window.localStorage.setItem('products', JSON.stringify(state.products))
     },
+    SET_STUDENT_PRODUCTS(state, studentProducts) {
+      state.studentProducts = studentProducts;
+      window.localStorage.setItem('studentProducts', JSON.stringify(state.studentProducts))
+    },
     SET_TOTAL_USERS(state, totalUsers) {
       state.totalUsers = totalUsers;
       window.localStorage.setItem('totalUsers', JSON.stringify(state.totalUsers))
@@ -139,6 +145,7 @@ export default new Vuex.Store({
     },
     VIEW_PRODUCT(state, product) {
       state.singleProduct = product      
+      window.localStorage.setItem('singleProduct', JSON.stringify(state.singleProduct));
     },
     VIEW_ORDER(state, order) {
       state.singleOrder = order
@@ -170,6 +177,12 @@ export default new Vuex.Store({
       let response = await  axios.get("http://localhost:5000/api/fetch")
       let products = response.data;
       commit('SET_PRODUCTS', products);  
+    },
+    //get students products
+    async getStudentProducts({commit}) {
+      let response = await axios.get("http://localhost:5000/api/fetchStudentProducts")
+      let studentProducts = response.data;
+      commit('SET_STUDENT_PRODUCTS', studentProducts)
     },
     //get total users
     async getTotalUsers({commit}) {

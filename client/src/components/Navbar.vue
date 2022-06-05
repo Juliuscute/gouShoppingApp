@@ -50,15 +50,15 @@
               Login
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="firstName"> 
+          <v-list-item v-if="firstName">
             <v-list-item-avatar>
-              <v-icon large>mdi-account-circle</v-icon>
+              <v-icon>mdi-account-circle</v-icon>
             </v-list-item-avatar>
-             <v-list-item-content>
+            <v-list-item-content>
               <v-list-item-title> {{ firstName }} </v-list-item-title>
               <v-list-item-subtitle>Logged in</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item><v-divider />
+            </v-list-item-content> </v-list-item
+          ><v-divider />
           <v-list-item style="cursor: pointer" v-if="!firstName">
             <v-list-item-icon>
               <v-icon small>mdi-account-plus-outline</v-icon>
@@ -67,15 +67,37 @@
               Register
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="firstName" style="cursor: pointer" @click="goToHome">
-          <v-list-item-icon>
-            <v-icon small>mdi-home</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title class="ml-n2"> Home </v-list-item-title>
+          <v-list-item
+            v-if="firstName"
+            style="cursor: pointer"
+            @click="goToHome"
+          >
+            <v-list-item-icon>
+              <v-icon small>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n2"> Home </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="firstName"
+            style="cursor: pointer"
+            @click="sellItem"
+          >
+            <v-list-item-icon>
+              <v-icon small>mdi-shopping</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n2"> Sell item </v-list-item-title>
+          </v-list-item>
+          <v-list-item style="cursor: pointer" @click="buyItem">
+            <v-list-item-icon>
+              <v-icon small>mdi-cart-variant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n2">
+              Buy from a student
+            </v-list-item-title>
           </v-list-item>
           <v-list-item style="cursor: pointer" v-if="firstName">
             <v-list-item-icon>
-              <v-icon >mdi-account-outline</v-icon>
+              <v-icon small>mdi-account-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="ml-n2" @click="profile">
               Profile
@@ -83,7 +105,7 @@
           </v-list-item>
           <v-list-item style="cursor: pointer" v-if="firstName">
             <v-list-item-icon>
-              <v-icon>mdi-logout</v-icon>
+              <v-icon small>mdi-logout</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="ml-n2" @click="logout">
               Log out
@@ -111,7 +133,9 @@
         dark
         class="align-center justify-center hidden-sm-and-up"
       >
-        <v-card-text class="text-center subtitle-1 font-weight-regular white--text">
+        <v-card-text
+          class="text-center subtitle-1 font-weight-regular white--text"
+        >
           GOUNI shopping App &nbsp;<v-icon>mdi-cart-outline</v-icon>
         </v-card-text>
         <v-divider></v-divider>
@@ -136,6 +160,20 @@
             <v-icon small>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="ml-n2"> Home </v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="firstName" style="cursor: pointer" @click="sellItem">
+          <v-list-item-icon>
+            <v-icon small>mdi-shopping</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="ml-n2"> Sell item </v-list-item-title>
+        </v-list-item>
+        <v-list-item style="cursor: pointer" @click="buyItem">
+          <v-list-item-icon>
+            <v-icon small>mdi-cart-variant</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="ml-n2">
+            Buy from a student
+          </v-list-item-title>
         </v-list-item>
         <v-list-item v-if="firstName" style="cursor: pointer" @click="profile">
           <v-list-item-icon>
@@ -189,13 +227,13 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.$store.state.currentUser.role == "Admin"
+      return this.$store.state.currentUser.role == "Admin";
     },
   },
   methods: {
     goToHome() {
       this.$router.push("/");
-      this.drawer=false
+      this.drawer = false;
     },
     register() {
       this.$router.push("/register");
@@ -212,8 +250,14 @@ export default {
       this.$router.push("/admin_dashboard");
     },
     profile() {
-      this.$router.push("/profile")
-    }
+      this.$router.push("/profile");
+    },
+    sellItem() {
+      this.$router.push("/sell");
+    },
+    buyItem() {
+      this.$router.push("/studentMarketPlace");
+    },
   },
 };
 </script>

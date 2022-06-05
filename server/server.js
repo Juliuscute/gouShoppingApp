@@ -26,4 +26,4 @@ if(process.env.NODE_ENV === 'production') {
 
 
 //Listen on environment port or 5000
-app.listen(port, () => console.log(`listenning on port ${port}`));
+app.listen(port, () => console.log(`listening on port ${port}`));

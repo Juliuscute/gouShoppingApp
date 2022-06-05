@@ -110,7 +110,7 @@ export default {
   },
   data() {
     return {
-      product: this.product,
+     
     };
   },
   computed: {

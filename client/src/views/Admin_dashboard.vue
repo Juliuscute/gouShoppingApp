@@ -25,6 +25,7 @@
             $vuetify.goTo(item.link);
             dashboard = true;
             profile = false;
+            drawer = false
           "
           :key="item.title"
           link
@@ -44,6 +45,7 @@
           @click="
             dashboard = !dashboard;
             profile = !profile;
+            drawer = false
           "
         >
           <v-list-item-icon>

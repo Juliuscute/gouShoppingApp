@@ -8,6 +8,9 @@ import Product from '../views/Product.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
+import Sell from '../views/Sell.vue'
+import StudentMarketPlace from '../views/StudentMarketPlace.vue'
+import StudentProduct from '../views/StudentProduct.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +22,10 @@ const routes = [
   { path: '/product', name: 'product', component: Product},
   { path: '/register', name: 'register', component: Register},
   { path: '/login', name: 'login', component: Login},
-  { path: '/profile', name: 'profile', component: Profile}
+  { path: '/profile', name: 'profile', component: Profile},
+  { path: '/sell', name: 'sell', component: Sell},
+  { path: '/studentMarketPlace', name: 'studentMarketPlace', component: StudentMarketPlace},
+  { path: '/studentProduct', name: 'studentProduct', component: StudentProduct}
 ]
 
 const router = new VueRouter({

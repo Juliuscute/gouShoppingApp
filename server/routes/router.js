@@ -259,6 +259,17 @@ router.get("/fetch", (req, res) => {
   }) 
 })
 
+router.get("/fetchStudentProducts", (req, res) => {
+  const sql = "SELECT * FROM studentProducts"
+  conn.query(sql, (err, rows) => {
+    if(err) {
+      console.log(err);
+    } else {
+      res.json(rows);
+    }
+  })
+})
+
 //Getting all users from databse
 router.get("/getUsers", (req, res) => {
   const sql = " SELECT COUNT(*)  as 'count' FROM customers"
@@ -370,5 +381,40 @@ router.post("/upload", upload.single('product_image'), (req, res) => {
   }
 });   
 
+router.post('/student_upload', upload.single('product_image'), (req, res) => {
+  if(!req.file) {
+    console.log('No file uploaded');
+  } else {
+    const sql = `INSERT INTO studentProducts (product_image, product_name, product_price, user, product_category, location, phone, product_description, date) VALUES ("${req.file.filename}", "${req.body.product_name}", "${req.body.product_price}", "${req.body.user}", "${req.body.product_category}", "${req.body.location}", "${req.body.phone}", "${req.body.product_description}",  now() )`;
+    conn.query(sql, (err, result) => {
+
+       //Middleware that runs when error callback happens
+       router.use((error, req, res, next) => {
+        if (error.code === "INCORRECT FILETYPE") {
+          return res.status(422).send({ error: "Only images are allowed" });
+        }
+        if (error.code === "LIMIT_FILE_SIZE") {
+          return  res.status(422).send({ error: `Too large. Max size is ${MAX_SIZE / 1000}kb` });   
+        }
+      });
+      if (err) throw err
+      //res.json([true,results]) //.insertId
+      return res.send({ message: 'Product has been uploaded' })
+
+    })
+  }
+})
+
+router.get("deleteStudentProduct/", (req, res) => {
+  let product_id = req.body.product_id;
+  let sql = "DELETE FROM studentProducts WHERE id = ?"
+  conn.query(sql, [product_id]), (err, reault) => {
+    if(err) {
+      res.json({msg: 'something wen wrong'})
+    } else {
+      res.json({msg: 'product deleted successfully'})
+    }
+  }
+})
 
 module.exports = router;

@@ -9,11 +9,11 @@
       dark
       class=" align-center justify-center hidden-sm-and-up"
     >
-      <v-card-text class="text-center subtitle-1  white--text">Hi, {{ currentUser }}</v-card-text>
+      <v-card-text class="text-center subtitle-1 white--text">Hi, {{ currentUser }}</v-card-text>
     </v-card>
     <v-card
       color="#0D47A1"
-      height="150px"
+      height="250px"
       tile
       flat
       dark
@@ -52,14 +52,35 @@
             <v-icon class="white--text">mdi-cart-outline</v-icon>
             <span class="badge"> {{cartItemCount}} </span>            
           </v-btn>
-        </v-col>
+        </v-col><v-divider />
+       <v-row v-if="currentUser" style="border-top: 1px solid blue;">
+          <v-col cols ="12" md="6">
+            <v-card-text class="text-center mt-n2 font-weight-medium">
+               Got something to sell? post an advert <span>
+                 <v-btn class="ml-n2" @click="sellItem" text>here &nbsp;<v-icon>mdi-shopping</v-icon>
+                 </v-btn></span></v-card-text><v-divider class="hidden-md-and-up" />
+          </v-col> <v-divider class="hidden-sm-and-down" vertical></v-divider>
+          <v-col cols="12" md="6">
+            <v-card-text class="text-center mt-n2 font-weight-medium hidden-sm-and-down">
+               wanna buy from a student? go to students <span>
+                 <v-btn class="ml-n2" @click="buyItem" text>market place &nbsp;<v-icon>mdi-cart-variant</v-icon>
+                 </v-btn></span></v-card-text>
+
+                 <!--for small screen sizes-->
+                 <v-card-text class="text-center mt-n8 mb-8 font-weight-medium hidden-md-and-up">
+                  go to students <span>
+                 <v-btn class="ml-n2" @click="buyItem" text>market place &nbsp;<v-icon>mdi-cart-variant</v-icon>
+                 </v-btn></span></v-card-text>
+          </v-col>  
+       </v-row>
+
       </v-row>
     </v-card>
     <v-card tile class="mb-8 mt-n8" color="white">
       <v-row class="card1">
         <v-col cols="12" md="3" sm="6" v-for="product in filteredProduct " :key="product.productId">
           <v-hover v-slot:default="{ hover }">
-            <v-card height="350" width="310" align="center" flat outlined tile class="ml-4 mr-8" >
+            <v-card height="350" width="270" align="center" flat outlined tile class="ml-4 mr-8" >
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="black" small dark>new</v-btn>
@@ -105,11 +126,9 @@
                   style="height: 100%"
                 >
                   <v-btn rounded small color="white" @click="addToCart(product); snackbar=true">
-                    <v-icon small color="black">mdi-cart-outline</v-icon>
                     <strong> Add to cart </strong>
                   </v-btn>&nbsp;
                   <v-btn @click="viewProduct(product)" rounded small color="white">
-                    <v-icon small color="black">mdi-eye-outline</v-icon>
                     <strong> view product </strong>
                   </v-btn>
                 </div>
@@ -129,7 +148,7 @@ export default {
       currentUser: '',
       snackbar: false,
       searchProduct: "",
-      products: ""
+      products: "",
     };
   },
   computed: {
@@ -159,7 +178,14 @@ export default {
     viewProduct(product) {
       this.$store.dispatch('viewProduct', product)
       this.$router.push('product')
-    }
+    },
+     sellItem() {
+       this.$router.push('/sell')
+     },
+     buyItem() {
+       this.$router.push('/studentMarketPlace')
+     }
+    
   }
   
 };
@@ -192,5 +218,6 @@ export default {
 .card1 {
   background-color:whitesmoke;
 }
+
 </style>
 
